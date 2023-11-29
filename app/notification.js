@@ -20,32 +20,26 @@ const Notification = () => {
       </div>
     );
   }
-
   useEffect(() => {
     const setupNotificationListener = async () => {
+      console.log("checking......");
+
       try {
-        const unsubscribe = await onMessageListener(async (payload) => {
-          console.log("Received payload:", payload);
+        const payload = await onMessageListener();
+        console.log("Received payload:", payload);
 
-          const newNotification = {
-            title: payload?.notification?.title,
-            body: payload?.notification?.body,
-          };
-          console.log("newNotification :", newNotification);
-
-          setNotifications((prevNotifications) => [
-            ...prevNotifications,
-            newNotification,
-          ]);
-
-          notify(newNotification);
-        });
-
-        return () => {
-          if (unsubscribe && typeof unsubscribe === "function") {
-            unsubscribe();
-          }
+        const newNotification = {
+          title: payload?.notification?.title,
+          body: payload?.notification?.body,
         };
+        console.log("newNotification :", newNotification);
+
+        setNotifications((prevNotifications) => [
+          ...prevNotifications,
+          newNotification,
+        ]);
+
+        notify(newNotification);
       } catch (error) {
         console.error("Error setting up notification listener:", error);
       }
@@ -53,7 +47,7 @@ const Notification = () => {
 
     requestForToken();
     setupNotificationListener();
-  }, []); // Empty dependency array ensures that the effect runs once when the component mounts
+  }, [showNotifications]);
 
   useEffect(() => {
     console.log("Notifications:", notifications);
@@ -65,10 +59,9 @@ const Notification = () => {
       <button
         type="button"
         className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-        // onClick={() => {
-        //   setNotifications([]);
-        //   setShowNotifications(false);
-        // }}
+        onClick={() => {
+          setShowNotifications(!showNotifications);
+        }}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

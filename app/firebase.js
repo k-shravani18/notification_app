@@ -13,8 +13,8 @@ const firebaseConfig = {
   appId: "1:903903576370:web:06b364114070f6bae1172b",
   measurementId: "G-HJNMD889H3",
 };
-initializeApp(firebaseConfig);
-const messaging = getMessaging();
+const app = initializeApp(firebaseConfig);
+const messaging = getMessaging(app);
 
 export const requestForToken = async () => {
   try {
@@ -36,13 +36,8 @@ export const requestForToken = async () => {
   }
 };
 
-export const onMessageListener = async () =>
-  new Promise((resolve) =>
-    (async () => {
-      const messagingResolve = messaging;
-      onMessage(messagingResolve, (payload) => {
-        console.log("payload", payload);
-        resolve(payload);
-      });
-    })()
-  );
+export const onMessageListener = () => {
+  onMessage(messaging, (payload) => {
+    console.log("Message received...:", payload);
+  });
+};
