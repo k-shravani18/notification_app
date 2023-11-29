@@ -21,33 +21,24 @@ const Notification = () => {
     );
   }
   useEffect(() => {
-    const setupNotificationListener = async () => {
-      console.log("checking......");
+    onMessage(messaging, (payload) => {
+      console.log("Message received...:", payload);
+      const newNotification = {
+        title: payload?.notification?.title,
+        body: payload?.notification?.body,
+      };
+      console.log("newNotification :", newNotification);
 
-      try {
-        const payload = await onMessageListener();
-        console.log("Received payload:", payload);
-
-        const newNotification = {
-          title: payload?.notification?.title,
-          body: payload?.notification?.body,
-        };
-        console.log("newNotification :", newNotification);
-
-        setNotifications((prevNotifications) => [
-          ...prevNotifications,
-          newNotification,
-        ]);
-
-        notify(newNotification);
-      } catch (error) {
-        console.error("Error setting up notification listener:", error);
-      }
-    };
-
-    requestForToken();
-    setupNotificationListener();
+      setNotifications((prevNotifications) => [
+        ...prevNotifications,
+        newNotification,
+      ]);
+    });
   }, [showNotifications]);
+  // useEffect(() => {
+  //   requestForToken();
+  //   setupNotificationListener();
+  // }, [showNotifications]);
 
   useEffect(() => {
     console.log("Notifications:", notifications);
