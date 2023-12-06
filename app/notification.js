@@ -40,7 +40,6 @@ const Notification = () => {
 
   useEffect(() => {
     requestForToken();
-    // setupNotificationListener();
   }, []);
 
   console.log("Notifications:", notifications);
@@ -68,14 +67,12 @@ const Notification = () => {
         {notifications.map((notification) => {
           return (
             <div>
-              <h3>{notification.title}</h3>
+              <h3>{notification.title + " :"}</h3>
               <div>{notification.body}</div>
             </div>
           );
         })}
       </div>
-
-      {/* )} */}
     </>
   );
 };
