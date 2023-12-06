@@ -5,10 +5,7 @@ import Notification from "./notification";
 const Home = () => {
   return (
     <>
-      <div className="app">
-        <h1>Hello....</h1>
-        <Notification />
-      </div>
+      <Notification />
     </>
   );
 };
